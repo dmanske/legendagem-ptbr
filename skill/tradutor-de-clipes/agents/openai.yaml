@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tradutor de Clipes"
+  short_description: "Traduz clipes musicais para legendas PT-BR"
+  default_prompt: "Use $tradutor-de-clipes para transcrever, traduzir e sincronizar este clipe em PT-BR."

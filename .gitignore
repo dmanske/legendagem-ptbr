@@ -1,0 +1,15 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.mp3
+*.mp4
+*.mkv
+*.mov
+*.wav
+*.flac
+*.json
+legendas/
+transcricoes/
+.DS_Store
