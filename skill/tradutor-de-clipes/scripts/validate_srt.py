@@ -7,6 +7,24 @@ from pathlib import Path
 
 
 TIMESTAMP = re.compile(r"^(\d{2}):(\d{2}):(\d{2}),(\d{3})$")
+HTML_TAG = re.compile(r"<[^>]+>")
+SDH_BRACKET = re.compile(r"\[[^\]]+\]")
+SDH_PARENTHETICAL_LINE = re.compile(r"^\s*\([^()]+\)\s*$")
+SDH_SPEAKER_LABEL = re.compile(
+    r"^\s*[A-ZÀ-ÖØ-Ý][A-ZÀ-ÖØ-Ý0-9 .'-]{1,30}:\s*"
+)
+MUSIC_SYMBOL = re.compile(r"[♪♫♬]")
+SDH_STYLE_TAG = re.compile(r"<\s*font\b|\{\\[^}]+\}", re.IGNORECASE)
+
+
+def read_subtitle(path: Path) -> str:
+    data = path.read_bytes()
+    for encoding in ("utf-8-sig", "cp1252", "iso-8859-1"):
+        try:
+            return data.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+    raise ValueError(f"não foi possível identificar a codificação de {path.name}")
 
 
 def seconds(value: str) -> float:
@@ -22,13 +40,23 @@ def main() -> int:
     parser.add_argument("srt")
     parser.add_argument("--max-lines", type=int, default=2)
     parser.add_argument("--max-cpl", type=int, default=42)
+    parser.add_argument("--target-cps", type=float, default=15.0)
     parser.add_argument("--max-cps", type=float, default=17.0)
+    parser.add_argument("--preferred-max-duration", type=float, default=4.7)
     parser.add_argument("--max-duration", type=float, default=7.5)
+    parser.add_argument(
+        "--allow-long-cue",
+        type=int,
+        action="append",
+        default=[],
+        help="ID de cue vocal indivisível autorizado a ultrapassar --max-duration",
+    )
     args = parser.parse_args()
 
-    content = Path(args.srt).read_text(encoding="utf-8-sig").strip()
+    content = read_subtitle(Path(args.srt)).strip()
     blocks = re.split(r"\n\s*\n", content) if content else []
     errors = []
+    warnings = []
     previous_end = -1.0
 
     for expected, block in enumerate(blocks, 1):
@@ -46,7 +74,8 @@ def main() -> int:
 
         text_lines = lines[2:]
         duration = end - start
-        text = " ".join(text_lines)
+        visible_lines = [HTML_TAG.sub("", line) for line in text_lines]
+        text = " ".join(visible_lines)
         cps = len(text) / duration if duration > 0 else float("inf")
 
         if cue_id != expected:
@@ -55,17 +84,50 @@ def main() -> int:
             errors.append(f"cue {cue_id}: sobreposição com cue anterior")
         if duration <= 0:
             errors.append(f"cue {cue_id}: duração inválida")
-        if duration > args.max_duration:
+        if duration > args.max_duration and cue_id in args.allow_long_cue:
+            warnings.append(
+                f"cue {cue_id}: duração {duration:.2f}s autorizada para unidade vocal indivisível"
+            )
+        elif duration > args.max_duration:
             errors.append(f"cue {cue_id}: duração {duration:.2f}s > {args.max_duration:.2f}s")
+        elif duration > args.preferred_max_duration:
+            warnings.append(
+                f"cue {cue_id}: duração {duration:.2f}s acima da faixa preferida"
+            )
         if len(text_lines) > args.max_lines:
             errors.append(f"cue {cue_id}: {len(text_lines)} linhas > {args.max_lines}")
-        for number, line in enumerate(text_lines, 1):
+        for number, line in enumerate(visible_lines, 1):
             if len(line) > args.max_cpl:
                 errors.append(
                     f"cue {cue_id}, linha {number}: {len(line)} caracteres > {args.max_cpl}"
                 )
+            original_line = text_lines[number - 1]
+            if SDH_BRACKET.search(line):
+                errors.append(
+                    f"cue {cue_id}, linha {number}: marcação SDH entre colchetes"
+                )
+            if SDH_PARENTHETICAL_LINE.match(line):
+                errors.append(
+                    f"cue {cue_id}, linha {number}: descrição SDH entre parênteses"
+                )
+            if SDH_SPEAKER_LABEL.match(line):
+                errors.append(
+                    f"cue {cue_id}, linha {number}: provável rótulo de falante"
+                )
+            if MUSIC_SYMBOL.search(line):
+                errors.append(
+                    f"cue {cue_id}, linha {number}: símbolo musical não permitido"
+                )
+            if SDH_STYLE_TAG.search(original_line):
+                errors.append(
+                    f"cue {cue_id}, linha {number}: estilo de cor ou posição não permitido"
+                )
         if cps > args.max_cps:
             errors.append(f"cue {cue_id}: {cps:.1f} CPS > {args.max_cps:.1f}")
+        elif cps > args.target_cps:
+            warnings.append(
+                f"cue {cue_id}: {cps:.1f} CPS acima da meta de {args.target_cps:.1f}"
+            )
         previous_end = end
 
     if errors:
@@ -74,7 +136,14 @@ def main() -> int:
             print(f"- {error}")
         return 1
 
-    print(f"OK: {len(blocks)} cues; sem violações")
+    if warnings:
+        print(f"OK: {len(blocks)} cues; sem violações rígidas")
+        print("ATENÇÃO EDITORIAL")
+        for warning in warnings:
+            print(f"- {warning}")
+        return 0
+
+    print(f"OK: {len(blocks)} cues; sem violações ou alertas")
     return 0
 
 

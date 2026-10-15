@@ -20,30 +20,40 @@ def load_module(name: str, path: Path):
 
 
 class PublicPackageTests(unittest.TestCase):
-    def test_skill_contains_exact_entry_rule(self):
-        skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
-        rules = (SKILL / "references" / "editorial-rules.md").read_text(encoding="utf-8")
-        self.assertIn("iniciar exatamente na primeira sílaba", skill)
-        self.assertIn("cue.start = primeira_palavra.start", rules)
-
-    def test_elevenlabs_response_is_normalized(self):
-        module = load_module(
-            "transcribe_elevenlabs",
-            SKILL / "scripts" / "transcribe_elevenlabs.py",
+    def test_package_contains_current_complete_skill(self):
+        self.assertEqual(
+            (SKILL / "VERSION").read_text(encoding="utf-8").strip(),
+            "2026.10.14.1",
         )
-        payload = {
-            "language_code": "en",
-            "text": "Turn around",
-            "words": [
-                {"type": "word", "text": "Turn", "start": 1.0, "end": 1.4},
-                {"type": "spacing", "text": " ", "start": 1.4, "end": 1.5},
-                {"type": "word", "text": "around", "start": 1.5, "end": 2.1},
-            ],
-        }
-        result = module.normalize(payload)
-        self.assertEqual(result["provider"], "elevenlabs")
-        self.assertEqual(result["segments"][0]["start"], 1.0)
-        self.assertEqual(len(result["segments"][0]["words"]), 2)
+        required = [
+            "audiovisual-dialogue-rules.md",
+            "contextual-translation-workflow.md",
+            "dialogue-selective-rules.md",
+            "editorial-rules.md",
+            "existing-srt-rules.md",
+            "music-clean-rules.md",
+            "source-verification-rules.md",
+        ]
+        for filename in required:
+            self.assertTrue((SKILL / "references" / filename).is_file(), filename)
+
+    def test_skill_contains_entry_and_exit_rules(self):
+        skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("cue.start = primeira_silaba_audivel", skill)
+        self.assertIn("correção exclusiva de saída", skill)
+        self.assertIn("piano, reverb ou acompanhamento", readme)
+
+    def test_scribe_request_fields(self):
+        module = load_module(
+            "transcribe_scribe_v2",
+            SKILL / "scripts" / "transcribe_scribe_v2.py",
+        )
+        fields = module.request_fields("en", False, None)
+        self.assertEqual(fields["model_id"], "scribe_v2")
+        self.assertEqual(fields["timestamps_granularity"], "word")
+        self.assertEqual(fields["language_code"], "en")
+        self.assertEqual(fields["diarize"], "false")
 
     def test_validator_accepts_valid_fixture(self):
         completed = subprocess.run(

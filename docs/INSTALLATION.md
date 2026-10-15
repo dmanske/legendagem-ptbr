@@ -1,6 +1,6 @@
 # Instalação
 
-## 1. Instalar a skill
+## Instalação rápida
 
 ### macOS ou Linux
 
@@ -14,9 +14,15 @@ curl -fsSL https://raw.githubusercontent.com/dmanske/tradutor-de-clipes/main/ins
 irm https://raw.githubusercontent.com/dmanske/tradutor-de-clipes/main/install.ps1 | iex
 ```
 
-O instalador copia a pasta completa para `${CODEX_HOME}/skills/tradutor-de-clipes` ou, por padrão, `~/.codex/skills/tradutor-de-clipes`. Uma instalação anterior é preservada como backup.
+O instalador copia a pasta completa para `~/.codex/skills/tradutor-de-clipes`
+ou para `${CODEX_HOME}/skills/tradutor-de-clipes`. Uma instalação anterior é
+renomeada como backup.
 
-## 2. Instalar FFmpeg e Python
+Abra uma nova sessão do Codex depois da instalação.
+
+## Dependências
+
+São necessários Python 3.9+, FFmpeg e FFprobe.
 
 ### macOS com Homebrew
 
@@ -36,40 +42,16 @@ winget install --id Git.Git --exact
 
 ```bash
 sudo apt update
-sudo apt install -y ffmpeg python3 python3-venv git
+sudo apt install -y ffmpeg python3 git
 ```
 
-Feche e reabra o terminal depois da instalação no Windows.
+## ElevenLabs
 
-## 3. Escolher a transcrição
+Crie uma chave com acesso a Speech to Text e configure a variável
+`ELEVENLABS_API_KEY` conforme [CONFIGURATION.md](CONFIGURATION.md). Não coloque
+a chave no comando de transcrição, no repositório ou no prompt enviado ao agente.
 
-### ElevenLabs recomendado
-
-Crie uma chave com permissão Speech to Text e configure `ELEVENLABS_API_KEY` conforme [CONFIGURATION.md](CONFIGURATION.md).
-
-### Whisper local opcional
-
-```bash
-python3 -m venv .venv
-```
-
-macOS ou Linux:
-
-```bash
-source .venv/bin/activate
-pip install --upgrade pip faster-whisper
-```
-
-Windows PowerShell:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip faster-whisper
-```
-
-O primeiro uso do Whisper pode baixar vários gigabytes de modelo.
-
-## 4. Diagnosticar
+## Diagnóstico
 
 macOS ou Linux:
 
@@ -83,12 +65,34 @@ Windows:
 py -3 "$HOME\.codex\skills\tradutor-de-clipes\scripts\doctor.py"
 ```
 
+O diagnóstico mostra apenas se a chave está configurada; nunca imprime o valor.
+
 ## Instalação revisável
 
-Se preferir não executar código diretamente da internet:
+Para inspecionar o código antes da instalação:
 
 ```bash
 git clone https://github.com/dmanske/tradutor-de-clipes.git
 cd tradutor-de-clipes
 bash install.sh
+```
+
+No Windows:
+
+```powershell
+git clone https://github.com/dmanske/tradutor-de-clipes.git
+Set-Location tradutor-de-clipes
+.\install.ps1
+```
+
+## Atualização
+
+Execute novamente o instalador rápido. A instalação anterior será preservada
+como backup. Quem mantém um clone também pode executar `git pull` antes do
+instalador local.
+
+Para conferir a versão instalada:
+
+```bash
+cat ~/.codex/skills/tradutor-de-clipes/VERSION
 ```

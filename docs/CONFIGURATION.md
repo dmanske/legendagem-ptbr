@@ -1,41 +1,60 @@
-# Configuração de IA e ElevenLabs
+# Configuração
 
-## IA
+## Agente de tradução
 
-Uma IA ativa é necessária para revisar a transcrição, traduzir o sentido da música e aplicar as regras editoriais. No Codex, a autenticação da IA é administrada pelo próprio produto; não é necessário colocar uma chave de IA dentro desta skill.
+O Codex executa a tradução editorial usando o contexto completo da obra. Não é
+necessário configurar outra chave de IA dentro desta skill.
 
-Em uma automação independente, use um provedor compatível com Chat Completions e configure `AI_BASE_URL`, `AI_API_KEY` e `AI_MODEL` fora do Git. Essas variáveis são reservadas para a automação que consumir a skill; os scripts deste repositório não enviam tradução diretamente a um provedor.
+## ElevenLabs Scribe v2
 
-## ElevenLabs
+A transcrição principal usa o modelo `scribe_v2` com timestamps por palavra.
+Crie uma chave com acesso a Speech to Text e mantenha-a fora do repositório.
 
-Crie uma chave da ElevenLabs com permissão Speech to Text. A skill usa o modelo `scribe_v2` e solicita timestamps por palavra.
+### macOS com zsh
 
-### macOS ou Linux — sessão atual
+Para evitar que a chave fique no histórico do terminal:
 
 ```bash
-export ELEVENLABS_API_KEY="sua-chave"
+read -s "ELEVENLABS_API_KEY?Cole a chave da ElevenLabs: "; echo
+export ELEVENLABS_API_KEY
 ```
 
-### Windows PowerShell — sessão atual
+### Linux com bash
+
+```bash
+read -rsp "Cole a chave da ElevenLabs: " ELEVENLABS_API_KEY; echo
+export ELEVENLABS_API_KEY
+```
+
+### Windows PowerShell
 
 ```powershell
-$env:ELEVENLABS_API_KEY = "sua-chave"
+$env:ELEVENLABS_API_KEY = Read-Host "Cole a chave da ElevenLabs"
 ```
 
-Para armazenamento permanente, prefira o cofre de credenciais do sistema ou o gerenciador seguro usado pela sua automação. Variáveis persistentes em arquivos de perfil ficam armazenadas como texto e exigem cuidado.
+Para armazenamento permanente, prefira o cofre de credenciais do sistema ou o
+gerenciador seguro usado pelo seu ambiente. Arquivos de perfil armazenam o valor
+como texto e exigem cuidado.
 
-## Testar sem revelar a chave
+## Verificar sem revelar a chave
 
 ```bash
-python3 skill/tradutor-de-clipes/scripts/doctor.py
+python3 ~/.codex/skills/tradutor-de-clipes/scripts/doctor.py
 ```
 
-O diagnóstico informa apenas se a variável existe. Ele nunca imprime o valor.
+O diagnóstico informa apenas `CONFIGURADA` ou `SEM CHAVE`.
+
+## Falhas da ElevenLabs
+
+A skill não deve trocar silenciosamente para outro transcritor. Se a credencial
+estiver ausente, expirada ou sem permissão, ou se o serviço falhar, o agente deve
+parar e informar o problema. O transcritor local incluído no pacote só deve ser
+usado quando o usuário o escolher explicitamente.
 
 ## Segurança
 
-- Nunca coloque chaves em `.env.example`.
+- Nunca coloque credenciais em `.env.example`.
 - Nunca faça commit de `.env`.
-- Nunca cole chaves em conversas, issues ou capturas de tela.
-- Revogue imediatamente uma chave exposta.
-- Restrinja a chave ElevenLabs ao recurso Speech to Text quando possível.
+- Nunca cole a chave em conversas, issues ou capturas de tela.
+- Revogue imediatamente qualquer chave exposta.
+- Restrinja a chave ao recurso Speech to Text quando possível.
