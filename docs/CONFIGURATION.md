@@ -39,7 +39,7 @@ como texto e exigem cuidado.
 ## Verificar sem revelar a chave
 
 ```bash
-python3 ~/.codex/skills/tradutor-de-clipes/scripts/doctor.py
+python3 ~/.codex/skills/legendagem-ptbr/scripts/doctor.py
 ```
 
 O diagnóstico informa apenas `CONFIGURADA` ou `SEM CHAVE`.

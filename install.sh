@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -eu
 
-REPO="${TRADUTOR_REPO:-dmanske/tradutor-de-clipes}"
-REF="${TRADUTOR_REF:-main}"
-SKILL_NAME="tradutor-de-clipes"
+REPO="${LEGENDAGEM_REPO:-${TRADUTOR_REPO:-dmanske/legendagem-ptbr}}"
+REF="${LEGENDAGEM_REF:-${TRADUTOR_REF:-main}}"
+SKILL_NAME="legendagem-ptbr"
+LEGACY_SKILL_NAME="tradutor-de-clipes"
 CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"
 DESTINATION="$CODEX_ROOT/skills/$SKILL_NAME"
+LEGACY_DESTINATION="$CODEX_ROOT/skills/$LEGACY_SKILL_NAME"
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || pwd)"
 TEMP_DIR=""
 
@@ -41,10 +43,16 @@ if [ ! -f "$SOURCE/SKILL.md" ]; then
 fi
 
 mkdir -p "$CODEX_ROOT/skills"
+TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 if [ -e "$DESTINATION" ]; then
-  BACKUP="$DESTINATION.backup-$(date +%Y%m%d-%H%M%S)"
+  BACKUP="$DESTINATION.backup-$TIMESTAMP"
   mv "$DESTINATION" "$BACKUP"
   echo "Versão anterior preservada em: $BACKUP"
+fi
+if [ -e "$LEGACY_DESTINATION" ]; then
+  LEGACY_BACKUP="$LEGACY_DESTINATION.backup-$TIMESTAMP"
+  mv "$LEGACY_DESTINATION" "$LEGACY_BACKUP"
+  echo "Nome antigo preservado em: $LEGACY_BACKUP"
 fi
 
 cp -R "$SOURCE" "$DESTINATION"

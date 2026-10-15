@@ -5,18 +5,21 @@
 ### macOS ou Linux
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dmanske/tradutor-de-clipes/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/dmanske/legendagem-ptbr/main/install.sh | bash
 ```
 
 ### Windows PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/dmanske/tradutor-de-clipes/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/dmanske/legendagem-ptbr/main/install.ps1 | iex
 ```
 
-O instalador copia a pasta completa para `~/.codex/skills/tradutor-de-clipes`
-ou para `${CODEX_HOME}/skills/tradutor-de-clipes`. Uma instalação anterior é
+O instalador copia a pasta completa para `~/.codex/skills/legendagem-ptbr`
+ou para `${CODEX_HOME}/skills/legendagem-ptbr`. Uma instalação anterior é
 renomeada como backup.
+
+Se encontrar a antiga `tradutor-de-clipes`, o instalador também a transforma em
+backup para evitar duas skills equivalentes ativas ao mesmo tempo.
 
 Abra uma nova sessão do Codex depois da instalação.
 
@@ -56,13 +59,13 @@ a chave no comando de transcrição, no repositório ou no prompt enviado ao age
 macOS ou Linux:
 
 ```bash
-python3 ~/.codex/skills/tradutor-de-clipes/scripts/doctor.py
+python3 ~/.codex/skills/legendagem-ptbr/scripts/doctor.py
 ```
 
 Windows:
 
 ```powershell
-py -3 "$HOME\.codex\skills\tradutor-de-clipes\scripts\doctor.py"
+py -3 "$HOME\.codex\skills\legendagem-ptbr\scripts\doctor.py"
 ```
 
 O diagnóstico mostra apenas se a chave está configurada; nunca imprime o valor.
@@ -72,16 +75,16 @@ O diagnóstico mostra apenas se a chave está configurada; nunca imprime o valor
 Para inspecionar o código antes da instalação:
 
 ```bash
-git clone https://github.com/dmanske/tradutor-de-clipes.git
-cd tradutor-de-clipes
+git clone https://github.com/dmanske/legendagem-ptbr.git
+cd legendagem-ptbr
 bash install.sh
 ```
 
 No Windows:
 
 ```powershell
-git clone https://github.com/dmanske/tradutor-de-clipes.git
-Set-Location tradutor-de-clipes
+git clone https://github.com/dmanske/legendagem-ptbr.git
+Set-Location legendagem-ptbr
 .\install.ps1
 ```
 
@@ -94,5 +97,5 @@ instalador local.
 Para conferir a versão instalada:
 
 ```bash
-cat ~/.codex/skills/tradutor-de-clipes/VERSION
+cat ~/.codex/skills/legendagem-ptbr/VERSION
 ```

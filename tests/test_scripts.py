@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skill" / "tradutor-de-clipes"
+SKILL = ROOT / "skill" / "legendagem-ptbr"
 
 
 def load_module(name: str, path: Path):
@@ -23,7 +23,7 @@ class PublicPackageTests(unittest.TestCase):
     def test_package_contains_current_complete_skill(self):
         self.assertEqual(
             (SKILL / "VERSION").read_text(encoding="utf-8").strip(),
-            "2026.10.14.1",
+            "2026.10.15.1",
         )
         required = [
             "audiovisual-dialogue-rules.md",
@@ -40,6 +40,9 @@ class PublicPackageTests(unittest.TestCase):
     def test_skill_contains_entry_and_exit_rules(self):
         skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        metadata = (SKILL / "agents" / "openai.yaml").read_text(encoding="utf-8")
+        self.assertIn("name: legendagem-ptbr", skill)
+        self.assertIn("$legendagem-ptbr", metadata)
         self.assertIn("cue.start = primeira_silaba_audivel", skill)
         self.assertIn("correção exclusiva de saída", skill)
         self.assertIn("piano, reverb ou acompanhamento", readme)

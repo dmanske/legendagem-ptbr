@@ -8,7 +8,7 @@ Antes de enviar uma alteração:
 
 ```bash
 python3 -m unittest discover -s tests -v
-python3 skill/tradutor-de-clipes/scripts/validate_srt.py tests/fixtures/valid.srt
+python3 skill/legendagem-ptbr/scripts/validate_srt.py tests/fixtures/valid.srt
 ```
 
 Ao alterar o conteúdo da skill, atualize também `VERSION` e mantenha README,

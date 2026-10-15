@@ -1,10 +1,12 @@
 $ErrorActionPreference = "Stop"
 
-$Repo = if ($env:TRADUTOR_REPO) { $env:TRADUTOR_REPO } else { "dmanske/tradutor-de-clipes" }
-$Ref = if ($env:TRADUTOR_REF) { $env:TRADUTOR_REF } else { "main" }
-$SkillName = "tradutor-de-clipes"
+$Repo = if ($env:LEGENDAGEM_REPO) { $env:LEGENDAGEM_REPO } elseif ($env:TRADUTOR_REPO) { $env:TRADUTOR_REPO } else { "dmanske/legendagem-ptbr" }
+$Ref = if ($env:LEGENDAGEM_REF) { $env:LEGENDAGEM_REF } elseif ($env:TRADUTOR_REF) { $env:TRADUTOR_REF } else { "main" }
+$SkillName = "legendagem-ptbr"
+$LegacySkillName = "tradutor-de-clipes"
 $CodexRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
 $Destination = Join-Path (Join-Path $CodexRoot "skills") $SkillName
+$LegacyDestination = Join-Path (Join-Path $CodexRoot "skills") $LegacySkillName
 $LocalSource = if ($PSScriptRoot) { Join-Path $PSScriptRoot "skill\$SkillName" } else { $null }
 $TempDirectory = $null
 
@@ -13,7 +15,7 @@ try {
         $Source = $LocalSource
     }
     else {
-        $TempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ("tradutor-de-clipes-" + [guid]::NewGuid())
+        $TempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ("legendagem-ptbr-" + [guid]::NewGuid())
         New-Item -ItemType Directory -Path $TempDirectory | Out-Null
         $Archive = Join-Path $TempDirectory "repository.zip"
         $Url = "https://github.com/$Repo/archive/refs/heads/$Ref.zip"
@@ -28,11 +30,16 @@ try {
     }
 
     New-Item -ItemType Directory -Force -Path (Split-Path $Destination) | Out-Null
+    $Timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
     if (Test-Path $Destination) {
-        $Timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $Backup = "$Destination.backup-$Timestamp"
         Move-Item -Path $Destination -Destination $Backup
         Write-Host "Versão anterior preservada em: $Backup"
+    }
+    if (Test-Path $LegacyDestination) {
+        $LegacyBackup = "$LegacyDestination.backup-$Timestamp"
+        Move-Item -Path $LegacyDestination -Destination $LegacyBackup
+        Write-Host "Nome antigo preservado em: $LegacyBackup"
     }
 
     Copy-Item -Recurse -Path $Source -Destination $Destination

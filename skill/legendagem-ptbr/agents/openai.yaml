@@ -1,0 +1,4 @@
+interface:
+  display_name: "Legendagem Profissional PT-BR"
+  short_description: "Cria e revisa legendas PT-BR profissionais"
+  default_prompt: "Use $legendagem-ptbr para criar uma legenda PT-BR limpa, sem SDH, com pesquisa de contexto e sincronização adequada ao tipo de mídia."

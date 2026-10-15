@@ -1,4 +1,4 @@
-# Tradutor de Clipes
+# Legendagem Profissional PT-BR
 
 Skill pública para criar, traduzir, revisar e sincronizar legendas SRT limpas
 em português brasileiro. Funciona com clipes, músicas, shows, filmes, séries,
@@ -20,24 +20,46 @@ fraseado, leitura e sincronização — não por tradução automática palavra 
 - Até duas linhas, 42 caracteres por linha e máximo rígido de 17 CPS.
 - Validação determinística do SRT antes da entrega.
 
-Versão pública atual: **2026.10.14.1**.
+Versão pública atual: **2026.10.15.1**.
+
+## Como funciona
+
+1. **Inspeção:** identifica faixas, idioma, duração, codecs, volume e legendas existentes com FFmpeg e FFprobe.
+2. **Transcrição:** envia a mídia autorizada ao ElevenLabs Scribe v2 e salva a resposta original com timestamps por palavra. Em conteúdo com várias pessoas, a diarização pode ser usada apenas na análise interna.
+3. **Verificação:** confronta a transcrição com o áudio executado e, quando a obra é identificável, com letras, roteiros, nomes e fontes confiáveis. O áudio final continua sendo a autoridade para o que foi realmente dito ou cantado.
+4. **Tradução contextual:** reconstrói versos, falas ou microcenas completas antes de traduzir. Preserva agente, negação, tempo, lugar, intensidade, emoção, registro e imagens recorrentes.
+5. **Segmentação e sincronização:** cria cues conforme o tipo de mídia. Música segue ataques, células vocais e notas sustentadas; diálogo segue frases, falantes, pausas e cortes de cena.
+6. **Revisão editorial:** ajusta naturalidade, pontuação, capitalização, quebras de linha, repetições e velocidade de leitura, removendo todo conteúdo SDH.
+7. **Validação e entrega:** verifica estrutura, sobreposição, duas linhas, 42 CPL, 17 CPS e duração. Depois salva o SRT sem sobrescrever silenciosamente uma versão existente.
+
+## Modos principais
+
+- **Vídeo ou áudio sem legenda:** transcreve toda a faixa útil, traduz e cria a segmentação PT-BR do zero.
+- **Filme ou série com SRT original:** usa recomposição adaptativa; o SRT serve como texto e âncoras, enquanto áudio, falantes, leitura e cortes definem a estrutura final.
+- **Somente SRT:** preserva IDs, timestamps, ordem e quantidade por padrão, traduzindo com contexto entre os cues.
+- **Música e shows:** separa células cantadas, repetições, ad-libs e falas de palco; entra na primeira sílaba e sai no último som vocal audível.
+- **Diálogo seletivo:** mantém falas com significado e remove vocalizações, ruídos e descrições sem conteúdo verbal.
+- **Revisão de legenda pronta:** pode corrigir texto, quebras, entradas ou saídas de forma localizada, preservando os elementos já aprovados.
 
 ## Instalação em um comando
 
 ### macOS ou Linux
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dmanske/tradutor-de-clipes/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/dmanske/legendagem-ptbr/main/install.sh | bash
 ```
 
 ### Windows PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/dmanske/tradutor-de-clipes/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/dmanske/legendagem-ptbr/main/install.ps1 | iex
 ```
 
 O instalador preserva a versão anterior como backup. Abra uma nova sessão do
 Codex depois da instalação.
+
+Ao migrar da antiga `$tradutor-de-clipes`, o instalador arquiva a pasta anterior
+automaticamente para impedir que duas versões da mesma skill sejam carregadas.
 
 Se preferir revisar o código antes de executá-lo, consulte
 [docs/INSTALLATION.md](docs/INSTALLATION.md).
@@ -55,18 +77,18 @@ commits, issues, conversas ou capturas de tela.
 Execute o diagnóstico depois da instalação:
 
 ```bash
-python3 ~/.codex/skills/tradutor-de-clipes/scripts/doctor.py
+python3 ~/.codex/skills/legendagem-ptbr/scripts/doctor.py
 ```
 
 ## Como usar
 
 Anexe o arquivo ou informe seu caminho no Codex e peça:
 
-> Use $tradutor-de-clipes para criar uma legenda PT-BR profissional deste vídeo.
+> Use $legendagem-ptbr para criar uma legenda PT-BR profissional deste vídeo.
 
 Para um filme ou uma série com SRT original:
 
-> Use $tradutor-de-clipes com este vídeo e o SRT original. Faça recomposição adaptativa e entregue uma legenda PT-BR limpa.
+> Use $legendagem-ptbr com este vídeo e o SRT original. Faça recomposição adaptativa e entregue uma legenda PT-BR limpa.
 
 Para traduzir somente um SRT:
 
@@ -88,7 +110,7 @@ O script local permanece disponível somente para uso explicitamente escolhido.
 ## Estrutura
 
 ```text
-skill/tradutor-de-clipes/
+skill/legendagem-ptbr/
 ├── SKILL.md
 ├── VERSION
 ├── agents/

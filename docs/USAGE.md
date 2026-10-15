@@ -4,7 +4,7 @@
 
 Anexe o arquivo ou informe o caminho no Codex:
 
-> Use $tradutor-de-clipes para transcrever este vídeo com ElevenLabs Scribe v2, traduzir editorialmente para PT-BR, sincronizar e validar o SRT.
+> Use $legendagem-ptbr para transcrever este vídeo com ElevenLabs Scribe v2, traduzir editorialmente para PT-BR, sincronizar e validar o SRT.
 
 A skill inspeciona a mídia, salva a transcrição bruta, traduz por blocos de
 contexto e cria uma segmentação adequada ao tipo de conteúdo.
@@ -31,7 +31,7 @@ Sem a mídia correspondente, a estrutura é preservada por padrão.
 
 ## Usar tradução ou legenda aprovada como referência
 
-> Use $tradutor-de-clipes e considere o SRT aprovado como memória de estilo e tradução. Não copie os timestamps nem as quebras defeituosas.
+> Use $legendagem-ptbr e considere o SRT aprovado como memória de estilo e tradução. Não copie os timestamps nem as quebras defeituosas.
 
 ## Corrigir somente as saídas
 
@@ -44,7 +44,7 @@ de voz ou nota sustentada realmente audível.
 ## Transcrever diretamente com ElevenLabs
 
 ```bash
-python3 skill/tradutor-de-clipes/scripts/transcribe_scribe_v2.py \
+python3 skill/legendagem-ptbr/scripts/transcribe_scribe_v2.py \
   video.mp4 transcricao.json --language auto
 ```
 
@@ -54,13 +54,13 @@ análise interna. Os identificadores não aparecem no SRT.
 ## Validar um SRT
 
 ```bash
-python3 skill/tradutor-de-clipes/scripts/validate_srt.py legenda.srt
+python3 skill/legendagem-ptbr/scripts/validate_srt.py legenda.srt
 ```
 
 Uma unidade vocal indivisível confirmada pode ser autorizada explicitamente:
 
 ```bash
-python3 skill/tradutor-de-clipes/scripts/validate_srt.py \
+python3 skill/legendagem-ptbr/scripts/validate_srt.py \
   legenda.srt --allow-long-cue 36
 ```
 

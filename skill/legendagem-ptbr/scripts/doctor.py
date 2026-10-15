@@ -18,7 +18,7 @@ def main() -> int:
     args = parser.parse_args()
 
     codex_home = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
-    skill_path = codex_home / "skills" / "tradutor-de-clipes"
+    skill_path = codex_home / "skills" / "legendagem-ptbr"
     version_path = skill_path / "VERSION"
     checks = {
         "system": platform.system(),
@@ -43,7 +43,7 @@ def main() -> int:
     if args.json:
         print(json.dumps(checks, ensure_ascii=False, indent=2))
     else:
-        print("Tradutor de Clipes — diagnóstico")
+        print("Legendagem Profissional PT-BR — diagnóstico")
         print(f"Sistema: {checks['system']} | Python: {checks['python']}")
         print(f"Skill: {'OK' if checks['skill_installed'] else 'AUSENTE'}")
         print(f"Versão: {checks['version'] or 'NÃO IDENTIFICADA'}")

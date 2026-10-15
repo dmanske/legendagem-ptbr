@@ -29,13 +29,23 @@ jobs:
         shell: bash
         run: |
           bash -n install.sh
+          mkdir -p "$RUNNER_TEMP/codex/skills/tradutor-de-clipes"
+          touch "$RUNNER_TEMP/codex/skills/tradutor-de-clipes/legacy-marker"
           CODEX_HOME="$RUNNER_TEMP/codex" bash install.sh
-          test -f "$RUNNER_TEMP/codex/skills/tradutor-de-clipes/SKILL.md"
+          test -f "$RUNNER_TEMP/codex/skills/legendagem-ptbr/SKILL.md"
+          test ! -d "$RUNNER_TEMP/codex/skills/tradutor-de-clipes"
+          find "$RUNNER_TEMP/codex/skills" -maxdepth 1 -type d -name 'tradutor-de-clipes.backup-*' | grep -q .
 
       - name: Test Windows installer
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
           $env:CODEX_HOME = Join-Path $env:RUNNER_TEMP "codex"
+          $legacy = Join-Path $env:CODEX_HOME "skills\tradutor-de-clipes"
+          New-Item -ItemType Directory -Force -Path $legacy | Out-Null
+          New-Item -ItemType File -Path (Join-Path $legacy "legacy-marker") | Out-Null
           ./install.ps1
-          if (-not (Test-Path "$env:CODEX_HOME\skills\tradutor-de-clipes\SKILL.md")) { exit 1 }
+          if (-not (Test-Path "$env:CODEX_HOME\skills\legendagem-ptbr\SKILL.md")) { exit 1 }
+          if (Test-Path $legacy) { exit 1 }
+          $backup = Get-ChildItem (Join-Path $env:CODEX_HOME "skills") -Directory -Filter "tradutor-de-clipes.backup-*"
+          if (-not $backup) { exit 1 }
