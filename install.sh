@@ -8,6 +8,7 @@ LEGACY_SKILL_NAME="tradutor-de-clipes"
 CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"
 DESTINATION="$CODEX_ROOT/skills/$SKILL_NAME"
 LEGACY_DESTINATION="$CODEX_ROOT/skills/$LEGACY_SKILL_NAME"
+BACKUP_ROOT="$CODEX_ROOT/skill-backups"
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || pwd)"
 TEMP_DIR=""
 
@@ -42,15 +43,15 @@ if [ ! -f "$SOURCE/SKILL.md" ]; then
   exit 1
 fi
 
-mkdir -p "$CODEX_ROOT/skills"
-TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$CODEX_ROOT/skills" "$BACKUP_ROOT"
+TIMESTAMP="$(date +%Y%m%d-%H%M%S)-$$"
 if [ -e "$DESTINATION" ]; then
-  BACKUP="$DESTINATION.backup-$TIMESTAMP"
+  BACKUP="$BACKUP_ROOT/$SKILL_NAME.backup-$TIMESTAMP"
   mv "$DESTINATION" "$BACKUP"
   echo "Versão anterior preservada em: $BACKUP"
 fi
 if [ -e "$LEGACY_DESTINATION" ]; then
-  LEGACY_BACKUP="$LEGACY_DESTINATION.backup-$TIMESTAMP"
+  LEGACY_BACKUP="$BACKUP_ROOT/$LEGACY_SKILL_NAME.backup-$TIMESTAMP"
   mv "$LEGACY_DESTINATION" "$LEGACY_BACKUP"
   echo "Nome antigo preservado em: $LEGACY_BACKUP"
 fi

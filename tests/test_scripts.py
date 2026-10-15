@@ -23,7 +23,7 @@ class PublicPackageTests(unittest.TestCase):
     def test_package_contains_current_complete_skill(self):
         self.assertEqual(
             (SKILL / "VERSION").read_text(encoding="utf-8").strip(),
-            "2026.10.15.1",
+            "2026.10.15.2",
         )
         required = [
             "audiovisual-dialogue-rules.md",
@@ -36,6 +36,7 @@ class PublicPackageTests(unittest.TestCase):
         ]
         for filename in required:
             self.assertTrue((SKILL / "references" / filename).is_file(), filename)
+        self.assertFalse((SKILL / "scripts" / "transcribe_clip.py").exists())
 
     def test_skill_contains_entry_and_exit_rules(self):
         skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
@@ -46,6 +47,8 @@ class PublicPackageTests(unittest.TestCase):
         self.assertIn("cue.start = primeira_silaba_audivel", skill)
         self.assertIn("correção exclusiva de saída", skill)
         self.assertIn("piano, reverb ou acompanhamento", readme)
+        self.assertIn("meta de 15 CPS", skill)
+        self.assertNotIn("alternativa local com Faster-Whisper", skill)
 
     def test_scribe_request_fields(self):
         module = load_module(

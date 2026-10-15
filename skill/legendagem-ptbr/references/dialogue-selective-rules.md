@@ -52,7 +52,7 @@ Não inferir nem criar diálogo a partir de leitura labial, gestos, gemidos ou c
 
 - Máximo de 2 linhas.
 - Máximo de 42 caracteres por linha.
-- Meta de 17 caracteres por segundo.
+- Meta de 15 caracteres por segundo e máximo rígido de 17.
 - Duração máxima de 7,5 segundos.
 - Sem sobreposição involuntária.
 - Condensar com fidelidade antes de antecipar, prolongar artificialmente ou apagar informação importante.

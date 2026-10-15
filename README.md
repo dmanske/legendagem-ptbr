@@ -20,7 +20,19 @@ fraseado, leitura e sincronização — não por tradução automática palavra 
 - Até duas linhas, 42 caracteres por linha e máximo rígido de 17 CPS.
 - Validação determinística do SRT antes da entrega.
 
-Versão pública atual: **2026.10.15.1**.
+Versão pública atual: **2026.10.15.2**.
+
+## Fonte oficial das regras
+
+O comportamento da skill é definido por `skill/legendagem-ptbr/SKILL.md` e
+pelos arquivos de `skill/legendagem-ptbr/references/`. O `README` é apenas uma
+apresentação para pessoas; prompts e regras de aplicativos antigos não são
+carregados pela skill.
+
+O padrão foi calibrado a partir de um acervo aprovado com 67 legendas e 7.955
+cues. Esse acervo serviu como evidência estatística e memória editorial, mas não
+é um conjunto de milhares de regras e não precisa ser enviado ao agente. As
+decisões reutilizáveis foram condensadas nas referências da skill.
 
 ## Como funciona
 
@@ -55,8 +67,8 @@ curl -fsSL https://raw.githubusercontent.com/dmanske/legendagem-ptbr/main/instal
 irm https://raw.githubusercontent.com/dmanske/legendagem-ptbr/main/install.ps1 | iex
 ```
 
-O instalador preserva a versão anterior como backup. Abra uma nova sessão do
-Codex depois da instalação.
+O instalador preserva a versão anterior em `~/.codex/skill-backups/`, fora da
+pasta indexada de skills. Abra uma nova sessão do Codex depois da instalação.
 
 Ao migrar da antiga `$tradutor-de-clipes`, o instalador arquiva a pasta anterior
 automaticamente para impedir que duas versões da mesma skill sejam carregadas.
@@ -102,10 +114,10 @@ Veja mais exemplos em [docs/USAGE.md](docs/USAGE.md).
 
 ## Política de transcrição
 
-O ElevenLabs Scribe v2 é o transcritor principal. A skill não troca
-silenciosamente para Whisper: se a ElevenLabs falhar ou a credencial estiver
-ausente, o agente deve informar o problema antes de usar qualquer alternativa.
-O script local permanece disponível somente para uso explicitamente escolhido.
+O ElevenLabs Scribe v2 é o transcritor deste fluxo. A skill não inclui nem usa
+Whisper, Faster-Whisper ou outro transcritor local como fallback. Se a
+ElevenLabs falhar, estiver sem credencial ou indisponível, o agente deve parar e
+informar o problema antes de produzir qualquer legenda alternativa.
 
 ## Estrutura
 

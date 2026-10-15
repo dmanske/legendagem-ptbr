@@ -120,7 +120,6 @@ legendado somente quando for indispensável à narrativa; isso não é SDH.
 ## Recursos
 
 - `scripts/transcribe_scribe_v2.py`: transcrição principal pelo ElevenLabs Scribe v2 usando `ELEVENLABS_API_KEY`.
-- `scripts/transcribe_clip.py`: alternativa local com Faster-Whisper e timestamps por palavra.
 - `scripts/segment_scribe_dialogue.py`: transforma palavras do ElevenLabs Scribe em fragmentos de diálogo.
 - `scripts/build_selective_dialogue_srt.py`: monta o SRT seletivo com suporte a `end_id`, edições e auditoria.
 - `scripts/validate_srt.py`: valida estrutura, sobreposição, CPL, CPS, duração e ausência de SDH.

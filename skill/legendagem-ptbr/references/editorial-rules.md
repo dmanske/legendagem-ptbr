@@ -13,7 +13,7 @@
 
 - Usar ElevenLabs Scribe v2 como primeira opção quando a chave e a autorização estiverem disponíveis.
 - Neste projeto, o pedido para legendar um clipe autoriza usar a chave ElevenLabs já configurada pelo proprietário.
-- Não substituir silenciosamente o Scribe v2 por Whisper. Informar a indisponibilidade e usar Whisper somente como alternativa local ou conferência.
+- Não usar Whisper, Faster-Whisper nem outro transcritor local como fallback. Se o Scribe v2 estiver sem credencial, falhar ou ficar indisponível, interromper o fluxo e informar o usuário antes de qualquer alternativa.
 - Usar timestamps do Scribe como pontos de busca. Mesmo o Scribe v2 não determina sozinho a primeira sílaba nem o final de uma nota sustentada.
 - Em música, separar os vocais antes da conferência acústica e enviar preferencialmente a faixa vocal ao Scribe quando o fluxo permitir. Em audiovisual falado, preservar a faixa que melhor mantenha o diálogo e usar diarização apenas como apoio interno.
 - Verificar a saída por palavra antes de segmentar. Marcar duração nula ou negativa, palavras comprimidas, timestamps duplicados e sequências impossivelmente rápidas como anomalias.

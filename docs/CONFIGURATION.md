@@ -46,10 +46,10 @@ O diagnóstico informa apenas `CONFIGURADA` ou `SEM CHAVE`.
 
 ## Falhas da ElevenLabs
 
-A skill não deve trocar silenciosamente para outro transcritor. Se a credencial
-estiver ausente, expirada ou sem permissão, ou se o serviço falhar, o agente deve
-parar e informar o problema. O transcritor local incluído no pacote só deve ser
-usado quando o usuário o escolher explicitamente.
+A skill não troca para outro transcritor. Se a credencial estiver ausente,
+expirada ou sem permissão, ou se o serviço falhar, o agente deve parar e
+informar o problema antes de produzir qualquer legenda alternativa. O pacote
+não inclui transcritor local.
 
 ## Segurança
 

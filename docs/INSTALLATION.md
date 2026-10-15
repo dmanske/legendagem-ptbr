@@ -16,10 +16,11 @@ irm https://raw.githubusercontent.com/dmanske/legendagem-ptbr/main/install.ps1 |
 
 O instalador copia a pasta completa para `~/.codex/skills/legendagem-ptbr`
 ou para `${CODEX_HOME}/skills/legendagem-ptbr`. Uma instalação anterior é
-renomeada como backup.
+movida para `~/.codex/skill-backups/` ou `${CODEX_HOME}/skill-backups/`, fora
+da pasta indexada de skills.
 
-Se encontrar a antiga `tradutor-de-clipes`, o instalador também a transforma em
-backup para evitar duas skills equivalentes ativas ao mesmo tempo.
+Se encontrar a antiga `tradutor-de-clipes`, o instalador também a move para a
+pasta de backups, evitando duas skills equivalentes ativas ao mesmo tempo.
 
 Abra uma nova sessão do Codex depois da instalação.
 

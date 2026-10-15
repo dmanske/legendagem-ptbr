@@ -7,6 +7,7 @@ $LegacySkillName = "tradutor-de-clipes"
 $CodexRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
 $Destination = Join-Path (Join-Path $CodexRoot "skills") $SkillName
 $LegacyDestination = Join-Path (Join-Path $CodexRoot "skills") $LegacySkillName
+$BackupRoot = Join-Path $CodexRoot "skill-backups"
 $LocalSource = if ($PSScriptRoot) { Join-Path $PSScriptRoot "skill\$SkillName" } else { $null }
 $TempDirectory = $null
 
@@ -30,14 +31,15 @@ try {
     }
 
     New-Item -ItemType Directory -Force -Path (Split-Path $Destination) | Out-Null
-    $Timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    New-Item -ItemType Directory -Force -Path $BackupRoot | Out-Null
+    $Timestamp = "$(Get-Date -Format 'yyyyMMdd-HHmmss')-$PID"
     if (Test-Path $Destination) {
-        $Backup = "$Destination.backup-$Timestamp"
+        $Backup = Join-Path $BackupRoot "$SkillName.backup-$Timestamp"
         Move-Item -Path $Destination -Destination $Backup
         Write-Host "Versão anterior preservada em: $Backup"
     }
     if (Test-Path $LegacyDestination) {
-        $LegacyBackup = "$LegacyDestination.backup-$Timestamp"
+        $LegacyBackup = Join-Path $BackupRoot "$LegacySkillName.backup-$Timestamp"
         Move-Item -Path $LegacyDestination -Destination $LegacyBackup
         Write-Host "Nome antigo preservado em: $LegacyBackup"
     }

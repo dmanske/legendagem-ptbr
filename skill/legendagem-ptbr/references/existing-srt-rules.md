@@ -75,7 +75,7 @@ Quando disponíveis, usar título, título original, ano, gênero, sinopse, pers
 
 - Máximo de 2 linhas e 42 caracteres por linha.
 - Permitir duas linhas mesmo quando o texto inteiro couber em uma, desde que a divisão semântica melhore claramente o equilíbrio e a apresentação profissional.
-- Meta de 17 CPS e duração máxima de 7,5 segundos, sem alterar tempos já aprovados.
+- Meta de 15 CPS, máximo rígido de 17 CPS e duração máxima de 7,5 segundos, sem alterar tempos já aprovados.
 - Não separar artigo e substantivo, preposição e complemento, negação e verbo, pronome clítico e verbo, auxiliar e verbo, nome próprio ou expressão fixa.
 - Preferir oração, vírgula, conjunção, pausa e bloco semântico.
 - Evitar palavras fracas no fim da linha.
