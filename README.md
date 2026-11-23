@@ -20,7 +20,7 @@ fraseado, leitura e sincronização — não por tradução automática palavra 
 - Até duas linhas, 42 caracteres por linha e máximo rígido de 17 CPS.
 - Validação determinística do SRT antes da entrega.
 
-Versão pública atual: **2026.10.15.2**.
+Versão pública atual: **2026.11.22.1**.
 
 ## Fonte oficial das regras
 

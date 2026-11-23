@@ -20,6 +20,7 @@ escolhido:
 - Filme, série, documentário, entrevista ou diálogo completo criado da mídia: ler `references/audiovisual-dialogue-rules.md`.
 - Diálogo seletivo, inclusive conteúdo adulto: ler `references/dialogue-selective-rules.md`.
 - Tradução ou revisão de SRT existente: ler `references/existing-srt-rules.md`.
+- Ressincronizar (texto da tradução bom, tempo errado; existe legenda de referência com sincronia boa, ex.: inglês do próprio vídeo): ler `references/resync-rules.md` e usar `scripts/resync_by_reference.py`. Não retraduzir.
 
 As regras formam um conjunto: não aplicar apenas limites técnicos e ignorar contexto, fraseado, integridade estrutural ou revisão editorial.
 

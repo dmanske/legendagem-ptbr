@@ -29,6 +29,22 @@ retimar cues quando o áudio, a troca de falante, a leitura ou os cortes exigire
 
 Sem a mídia correspondente, a estrutura é preservada por padrão.
 
+## Ressincronizar uma tradução
+
+Quando o texto em PT-BR está bom, mas o tempo não bate com o vídeo, e existe uma
+legenda com sincronia perfeita (por exemplo, o inglês extraído do próprio arquivo):
+
+```text
+Use a skill legendagem-ptbr para ressincronizar: tempos de ingles.srt,
+texto de portugues.srt. Não retraduza.
+```
+
+Direto pelo script:
+
+```bash
+python3 scripts/resync_by_reference.py ingles.srt portugues.srt portugues.sincronizado.srt --relatorio rel.json
+```
+
 ## Usar tradução ou legenda aprovada como referência
 
 > Use $legendagem-ptbr e considere o SRT aprovado como memória de estilo e tradução. Não copie os timestamps nem as quebras defeituosas.

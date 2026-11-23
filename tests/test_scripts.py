@@ -23,7 +23,7 @@ class PublicPackageTests(unittest.TestCase):
     def test_package_contains_current_complete_skill(self):
         self.assertEqual(
             (SKILL / "VERSION").read_text(encoding="utf-8").strip(),
-            "2026.10.15.2",
+            "2026.11.22.1",
         )
         required = [
             "audiovisual-dialogue-rules.md",
@@ -31,6 +31,7 @@ class PublicPackageTests(unittest.TestCase):
             "dialogue-selective-rules.md",
             "editorial-rules.md",
             "existing-srt-rules.md",
+            "resync-rules.md",
             "music-clean-rules.md",
             "source-verification-rules.md",
         ]
@@ -78,3 +79,24 @@ class PublicPackageTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ResyncTests(unittest.TestCase):
+    def test_uses_reference_times_and_keeps_text(self):
+        import tempfile
+        ref = ("1\n00:00:10,000 --> 00:00:12,000\nHello there.\n\n"
+               "2\n00:00:12,500 --> 00:00:13,000\n(SIGHS)\n\n"
+               "3\n00:00:20,000 --> 00:00:21,000\nCome back.\n\n"
+               "4\n00:00:21,100 --> 00:00:22,500\nPlease.\n")
+        pt = ("1\n00:00:09,200 --> 00:00:11,100\nOlá, você aí.\n\n"
+              "2\n00:00:19,200 --> 00:00:21,600\nVolte, por favor.\n")
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            (d / "ref.srt").write_text(ref, encoding="utf-8")
+            (d / "pt.srt").write_bytes(pt.encode("cp1252"))
+            subprocess.run([sys.executable, str(SKILL / "scripts" / "resync_by_reference.py"),
+                            str(d / "ref.srt"), str(d / "pt.srt"), str(d / "out.srt")],
+                           check=True, capture_output=True)
+            out = (d / "out.srt").read_text(encoding="utf-8").replace("\r\n", "\n")
+        self.assertIn("00:00:10,000 --> 00:00:12,000\nOlá, você aí.", out)
+        self.assertIn("00:00:20,000 --> 00:00:22,500\nVolte, por favor.", out)
