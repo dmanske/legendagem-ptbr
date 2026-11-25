@@ -23,7 +23,7 @@ class PublicPackageTests(unittest.TestCase):
     def test_package_contains_current_complete_skill(self):
         self.assertEqual(
             (SKILL / "VERSION").read_text(encoding="utf-8").strip(),
-            "2026.11.22.1",
+            "2026.11.24.1",
         )
         required = [
             "audiovisual-dialogue-rules.md",
