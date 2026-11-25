@@ -131,7 +131,7 @@ que estejam no mesmo cue.
 ## Validação
 
 - Máximo de 2 linhas e 42 caracteres por linha.
-- Meta de 15 CPS e máximo rígido de 17 CPS.
+- Meta de 15 CPS. Acima de 17 CPS é alerta, não motivo para encurtar: seguir `approved-dialogue-review-rules.md`.
 - Máximo de 7,5 segundos por cue, salvo timing preexistente e imutável.
 - Sem sobreposição involuntária.
 - Conferir todos os cues criados da mídia contra o áudio e o vídeo.

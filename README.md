@@ -17,10 +17,10 @@ fraseado, leitura e sincronização — não por tradução automática palavra 
 - Recomposição adaptativa de filmes e séries quando o vídeo e o SRT original são fornecidos juntos.
 - Preservação de IDs e timestamps ao traduzir somente um SRT, salvo pedido diferente.
 - Diálogo seletivo e limpeza completa de elementos SDH.
-- Até duas linhas, 42 caracteres por linha e máximo rígido de 17 CPS.
+- Até duas linhas, 42 caracteres por linha; 17 CPS é limite rígido em música e alerta em diálogo, que não é encurtado para caber.
 - Validação determinística do SRT antes da entrega.
 
-Versão pública atual: **2026.11.22.1**.
+Versão pública atual: **2026.11.24.1**.
 
 ## Fonte oficial das regras
 
