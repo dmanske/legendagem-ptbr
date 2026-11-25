@@ -20,7 +20,7 @@ fraseado, leitura e sincronização — não por tradução automática palavra 
 - Até duas linhas, 42 caracteres por linha; 17 CPS é limite rígido em música e alerta em diálogo, que não é encurtado para caber.
 - Validação determinística do SRT antes da entrega.
 
-Versão pública atual: **2026.11.24.2**.
+Versão pública atual: **2026.11.24.3**.
 
 ## Fonte oficial das regras
 
