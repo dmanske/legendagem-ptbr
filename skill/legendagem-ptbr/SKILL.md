@@ -124,6 +124,7 @@ legendado somente quando for indispensável à narrativa; isso não é SDH.
 - `scripts/transcribe_scribe_v2.py`: transcrição principal pelo ElevenLabs Scribe v2 usando `ELEVENLABS_API_KEY`.
 - `scripts/segment_scribe_dialogue.py`: transforma palavras do ElevenLabs Scribe em fragmentos de diálogo.
 - `scripts/build_selective_dialogue_srt.py`: monta o SRT seletivo com suporte a `end_id`, edições e auditoria.
+- `scripts/dialogue_review.py`: junta falas, cruza gênero com faixas auxiliares e lista a legenda ao lado do original.
 - `scripts/validate_srt.py`: valida estrutura, sobreposição, CPL, CPS, duração e ausência de SDH.
 - `references/editorial-rules.md`: padrão consolidado de tradução e sincronização.
 - `references/contextual-translation-workflow.md`: briefing, tradução por unidades semânticas e revisão contextual em PT-BR.

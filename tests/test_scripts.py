@@ -23,9 +23,10 @@ class PublicPackageTests(unittest.TestCase):
     def test_package_contains_current_complete_skill(self):
         self.assertEqual(
             (SKILL / "VERSION").read_text(encoding="utf-8").strip(),
-            "2026.11.24.1",
+            "2026.11.24.2",
         )
         required = [
+            "approved-dialogue-review-rules.md",
             "audiovisual-dialogue-rules.md",
             "contextual-translation-workflow.md",
             "dialogue-selective-rules.md",
@@ -50,6 +51,34 @@ class PublicPackageTests(unittest.TestCase):
         self.assertIn("piano, reverb ou acompanhamento", readme)
         self.assertIn("meta de 15 CPS", skill)
         self.assertNotIn("alternativa local com Faster-Whisper", skill)
+
+    def test_dialogue_review(self):
+        m = load_module("dialogue_review", SKILL / "scripts" / "dialogue_review.py")
+        base = [
+            (0.0, 1.0, ["Eu queria muito falar com você"]),
+            (1.001, 4.0, ["Sobre a festa."]),
+        ]
+        cues, feitas = m.juntar(base)
+        self.assertEqual(len(cues), 1)
+        self.assertEqual(len(feitas), 1)
+        self.assertEqual(" ".join(cues[0][2]), "Eu queria muito falar com você sobre a festa.")
+        self.assertEqual((cues[0][0], cues[0][1]), (0.0, 4.0))
+        # Frase encerrada, pausa, diálogo duplo e fala lenta não se juntam.
+        for caso in (
+            [(0.0, 1.0, ["Eu queria muito falar com você."]), base[1]],
+            [base[0], (1.5, 4.0, ["Sobre a festa."])],
+            [(0.0, 1.0, ["- Eu queria falar com você", "- Comigo"]), base[1]],
+            [(0.0, 1.0, ["Eu queria"]), base[1]],
+        ):
+            self.assertEqual(m.juntar(caso), (caso, []))
+        nome = m.juntar([base[0], (1.001, 4.0, ["Ana, sobre a festa."])], {"Ana"})[0]
+        self.assertIn("Ana,", " ".join(nome[0][2]))
+        linhas = m.quebrar("Toda aquela água do rio nos pulmões que o matou de uma vez por todas.")
+        self.assertTrue(all(len(x) <= 42 for x in linhas))
+        self.assertNotIn(linhas[0].split()[-1], m.FRACAS)
+        self.assertIsNone(m.quebrar("palavra " * 20))
+        self.assertTrue(m.GENERO.search("Se eu for convidada."))
+        self.assertFalse(m.GENERO.search("Bom dia."))
 
     def test_scribe_request_fields(self):
         module = load_module(

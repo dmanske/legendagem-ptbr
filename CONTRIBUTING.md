@@ -11,6 +11,9 @@ python3 -m unittest discover -s tests -v
 python3 skill/legendagem-ptbr/scripts/validate_srt.py tests/fixtures/valid.srt
 ```
 
+Só faça commit e push depois de ler o resultado: com teste falhando, não envie. Depois do
+push, confira o fluxo do GitHub Actions.
+
 Ao alterar o conteúdo da skill, atualize também `VERSION` e mantenha README,
 documentação e testes coerentes com o comportamento publicado.
 

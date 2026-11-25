@@ -8,6 +8,10 @@ ou traduzido de SRT. **Não vale para música**, que segue `music-clean-rules.md
 para timing que o usuário mandou preservar 1:1. Em conflito com outra regra de CPS,
 condensação ou segmentação de diálogo, **esta prevalece**.
 
+A conferência de gênero (seção 4) e a revisão geral (seção 5) são **obrigatórias em toda
+entrega**, sem esperar o usuário pedir. `scripts/dialogue_review.py` apoia as duas
+(`genero`, `lado-a-lado`) e a junção (`juntar`); o que ele lista são candidatos a conferir.
+
 ## 1. Texto completo primeiro
 
 - Não encurtar a tradução para caber em CPS. Preservar quem, o quê, onde, quando,
