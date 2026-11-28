@@ -65,7 +65,7 @@ pedaço perde a inicial maiúscula (nome próprio e personagem mantêm).
 
 ## 6. Validação e entrega
 
-- **Nome do arquivo** (vale sobre o item 15 do fluxo da `SKILL.md`): ao lado da mídia, a
+- **Nome do arquivo** (vale sobre o item 16 do fluxo da `SKILL.md`): ao lado da mídia, a
   legenda em português fica com o nome exato do vídeo e `.srt`, para o player abrir
   sozinho. Se esse nome já estiver com a legenda de origem, confirmar o idioma pelo
   conteúdo e renomeá-la para `<nome>.en.srt` (ou o código do idioma dela) antes de
