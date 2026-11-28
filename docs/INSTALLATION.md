@@ -49,6 +49,26 @@ sudo apt update
 sudo apt install -y ffmpeg python3 git
 ```
 
+## Separação de voz (opcional, recomendada para música)
+
+Para conferir entradas e saídas pela voz isolada, a skill usa o
+[Demucs](https://github.com/facebookresearch/demucs) (modelo `htdemucs`). Ele
+não vem com a skill: na primeira vez, o script instala o Demucs num ambiente
+Python próprio, sem mexer no Python do sistema. O PyTorch ocupa cerca de 1 GB,
+e o agente pede o "ok" antes de instalar.
+
+```bash
+# Já está instalado?
+bash ~/.codex/skills/legendagem-ptbr/scripts/separate_vocals.sh --check
+# Instalar agora (ou deixar o script instalar no primeiro uso)
+bash ~/.codex/skills/legendagem-ptbr/scripts/separate_vocals.sh --install
+```
+
+O ambiente fica em `~/.local/share/legendagem-ptbr/demucs-venv` (ou em
+`$LEGENDAGEM_HOME/demucs-venv`). Para remover, basta apagar essa pasta. A
+separação de um show de 8 minutos leva uns 5 minutos num Mac com Apple Silicon.
+Sem o Demucs a skill continua funcionando, com os tempos do Scribe.
+
 ## ElevenLabs
 
 Crie uma chave com acesso a Speech to Text e configure a variável

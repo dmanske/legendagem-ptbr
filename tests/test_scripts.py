@@ -23,7 +23,7 @@ class PublicPackageTests(unittest.TestCase):
     def test_package_contains_current_complete_skill(self):
         self.assertEqual(
             (SKILL / "VERSION").read_text(encoding="utf-8").strip(),
-            "2026.11.24.3",
+            "2026.11.28.1",
         )
         required = [
             "approved-dialogue-review-rules.md",

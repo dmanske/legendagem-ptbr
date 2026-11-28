@@ -27,6 +27,10 @@ def main() -> int:
         "ffmpeg": shutil.which("ffmpeg"),
         "ffprobe": shutil.which("ffprobe"),
         "elevenlabs_key": bool(os.environ.get("ELEVENLABS_API_KEY", "").strip()),
+        "demucs": (
+            Path(os.environ.get("LEGENDAGEM_HOME", Path.home() / ".local/share/legendagem-ptbr"))
+            / "demucs-venv" / "bin" / "python"
+        ).is_file(),
         "skill_installed": (skill_path / "SKILL.md").is_file(),
         "version": version_path.read_text(encoding="utf-8").strip()
         if version_path.is_file()
@@ -50,6 +54,10 @@ def main() -> int:
         print(f"FFmpeg: {'OK' if checks['ffmpeg'] else 'AUSENTE'}")
         print(f"FFprobe: {'OK' if checks['ffprobe'] else 'AUSENTE'}")
         print(f"ElevenLabs: {'CONFIGURADA' if checks['elevenlabs_key'] else 'SEM CHAVE'}")
+        print(
+            "Demucs (opcional, voz isolada em música): "
+            + ("OK" if checks["demucs"] else "AUSENTE — scripts/separate_vocals.sh --install")
+        )
         result = "pronto para usar" if checks["ready"] else "configuração incompleta"
         print(f"Resultado: {result}.")
     return 0 if checks["ready"] else 1
